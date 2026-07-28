@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://diqvextp1ri5m"]
+
+[ext_resource type="PackedScene" uid="uid://b5b0nnbid0q2x" path="res://piezas/block.tscn" id="1_2x81t"]
+
+[node name="PieceJ" type="Node2D" unique_id=1414976138]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=972334643]
+
+[node name="Block" parent="CanvasGroup" unique_id=496182608 instance=ExtResource("1_2x81t")]
+modulate = Color(0.09581507, 0.4506067, 1.92523e-07, 1)
+position = Vector2(-16, 80)
+
+[node name="Block2" parent="CanvasGroup" unique_id=170134040 instance=ExtResource("1_2x81t")]
+modulate = Color(0.09581507, 0.4506067, 1.92523e-07, 1)
+position = Vector2(16, 80)
+
+[node name="Block3" parent="CanvasGroup" unique_id=1075793527 instance=ExtResource("1_2x81t")]
+modulate = Color(0.09581507, 0.4506067, 1.92523e-07, 1)
+position = Vector2(16, 48)
+
+[node name="Block4" parent="CanvasGroup" unique_id=399067955 instance=ExtResource("1_2x81t")]
+modulate = Color(0.09581507, 0.4506067, 1.92523e-07, 1)
+position = Vector2(16, 16)

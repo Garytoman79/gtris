@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cd8d7nciw8ymp"]
+
+[ext_resource type="PackedScene" uid="uid://b5b0nnbid0q2x" path="res://piezas/block.tscn" id="1_xmtut"]
+
+[node name="PieceT" type="Node2D" unique_id=1414976138]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=1801628014]
+
+[node name="Block" parent="CanvasGroup" unique_id=496182608 instance=ExtResource("1_xmtut")]
+modulate = Color(0, 0, 1.1291975, 1)
+position = Vector2(0, 16)
+
+[node name="Block2" parent="CanvasGroup" unique_id=170134040 instance=ExtResource("1_xmtut")]
+modulate = Color(0, 0, 1.1291975, 1)
+position = Vector2(0, 48)
+
+[node name="Block3" parent="CanvasGroup" unique_id=1075793527 instance=ExtResource("1_xmtut")]
+modulate = Color(0, 0, 1.1291975, 1)
+position = Vector2(-32, 48)
+
+[node name="Block4" parent="CanvasGroup" unique_id=399067955 instance=ExtResource("1_xmtut")]
+modulate = Color(0, 0, 1.1291975, 1)
+position = Vector2(32, 48)
