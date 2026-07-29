@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://caefptih2bo0t"]
 
+[ext_resource type="Script" uid="uid://bkk775t7pcbok" path="res://piezas/piece_i.gd" id="1_2yxph"]
 [ext_resource type="PackedScene" uid="uid://b5b0nnbid0q2x" path="res://piezas/block.tscn" id="1_u5a18"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t85kk"]
+size = Vector2(32, 32)
+
 [node name="PieceI" type="Node2D" unique_id=1414976138]
+script = ExtResource("1_2yxph")
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=1326538354]
 clear_margin = 15.0
@@ -22,3 +27,23 @@ position = Vector2(16, 80)
 [node name="Block4" parent="CanvasGroup" unique_id=399067955 instance=ExtResource("1_u5a18")]
 modulate = Color(1.1291975, 0, 0, 1)
 position = Vector2(16, 112)
+
+[node name="PieceArea" type="Area2D" parent="." unique_id=2138585889]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PieceArea" unique_id=318101653]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PieceArea" unique_id=668128548]
+position = Vector2(16, 48)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PieceArea" unique_id=383247683]
+position = Vector2(16, 80)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="PieceArea" unique_id=530123782]
+position = Vector2(16, 112)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[connection signal="body_entered" from="PieceArea" to="." method="_on_piece_area_body_entered"]
