@@ -12,17 +12,12 @@ size = Vector2(6, 640)
 size = Vector2(320, 6)
 
 [node name="Board" type="Node2D" unique_id=499583945]
-position = Vector2(7.5, 4.5)
 script = ExtResource("1_hfb3y")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=498387495]
 points = PackedVector2Array(-3, -3, 323, -3, 323, 643, -3, 643, -3, -3)
 width = 6.0
 default_color = Color(0.6955032, 0.6955031, 0.6955031, 1)
-
-[node name="Timer" type="Timer" parent="." unique_id=95124498]
-wait_time = 0.10200000000000001
-autostart = true
 
 [node name="WallLeft" type="StaticBody2D" parent="." unique_id=894274566]
 
@@ -41,5 +36,3 @@ shape = SubResource("RectangleShape2D_jnyf0")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=155963628]
 position = Vector2(160, 643)
 shape = SubResource("RectangleShape2D_bqb0t")
-
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

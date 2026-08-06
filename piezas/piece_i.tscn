@@ -46,4 +46,5 @@ shape = SubResource("RectangleShape2D_t85kk")
 position = Vector2(16, 112)
 shape = SubResource("RectangleShape2D_t85kk")
 
-[connection signal="body_entered" from="PieceArea" to="." method="_on_piece_area_body_entered"]
+[node name="Pivot" type="Marker2D" parent="." unique_id=1551110374]
+position = Vector2(0, 64)
