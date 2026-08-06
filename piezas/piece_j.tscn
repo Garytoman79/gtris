@@ -2,6 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://b5b0nnbid0q2x" path="res://piezas/block.tscn" id="1_2x81t"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t85kk"]
+size = Vector2(32, 32)
+
 [node name="PieceJ" type="Node2D" unique_id=1414976138]
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=972334643]
@@ -21,3 +24,24 @@ position = Vector2(16, 48)
 [node name="Block4" parent="CanvasGroup" unique_id=399067955 instance=ExtResource("1_2x81t")]
 modulate = Color(0.09581507, 0.4506067, 1.92523e-07, 1)
 position = Vector2(16, 16)
+
+[node name="PieceArea" type="Area2D" parent="." unique_id=1854189677]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PieceArea" unique_id=1553222671]
+position = Vector2(-16, 80)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PieceArea" unique_id=1640296830]
+position = Vector2(16, 80)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PieceArea" unique_id=1217983090]
+position = Vector2(16, 48)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="PieceArea" unique_id=820886494]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_t85kk")
+
+[node name="Pivot" type="Marker2D" parent="." unique_id=402228841]
+position = Vector2(0, 64)

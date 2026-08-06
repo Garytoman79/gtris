@@ -2,14 +2,16 @@
 
 [ext_resource type="Script" uid="uid://c65jao75mn2nw" path="res://scenes/board/board.gd" id="1_hfb3y"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t85kk"]
-size = Vector2(8, 648)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s78fa"]
+size = Vector2(6, 640)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7x8du"]
-size = Vector2(330, 3)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jnyf0"]
+size = Vector2(6, 640)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bqb0t"]
+size = Vector2(320, 6)
 
 [node name="Board" type="Node2D" unique_id=499583945]
-position = Vector2(7.5, 4.5)
 script = ExtResource("1_hfb3y")
 
 [node name="Line2D" type="Line2D" parent="." unique_id=498387495]
@@ -17,21 +19,20 @@ points = PackedVector2Array(-3, -3, 323, -3, 323, 643, -3, 643, -3, -3)
 width = 6.0
 default_color = Color(0.6955032, 0.6955031, 0.6955031, 1)
 
-[node name="Timer" type="Timer" parent="." unique_id=95124498]
-autostart = true
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=894274566]
 
-[node name="Walls" type="StaticBody2D" parent="." unique_id=1483849277]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=1203933690]
+position = Vector2(-3, 320)
+shape = SubResource("RectangleShape2D_s78fa")
 
-[node name="WallLeft" type="CollisionShape2D" parent="Walls" unique_id=900578323]
-position = Vector2(-3.5, 316.75)
-shape = SubResource("RectangleShape2D_t85kk")
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=1946877292]
 
-[node name="WallRight" type="CollisionShape2D" parent="Walls" unique_id=741514300]
-position = Vector2(324.5, 319.5)
-shape = SubResource("RectangleShape2D_t85kk")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=699244552]
+position = Vector2(323, 320)
+shape = SubResource("RectangleShape2D_jnyf0")
 
-[node name="Floor" type="CollisionShape2D" parent="Walls" unique_id=1693215526]
-position = Vector2(160.5, 641.5)
-shape = SubResource("RectangleShape2D_7x8du")
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1744265543]
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=155963628]
+position = Vector2(160, 643)
+shape = SubResource("RectangleShape2D_bqb0t")
