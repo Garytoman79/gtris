@@ -9,7 +9,13 @@ size = Vector2(6, 640)
 size = Vector2(6, 640)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bqb0t"]
-size = Vector2(320, 6)
+size = Vector2(320, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7x8du"]
+font_size = 42
+font_color = Color(5.4334817, 5.4334817, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.23529412, 0.23529412, 0.23529412, 0.81960785)
 
 [node name="Board" type="Node2D" unique_id=499583945]
 script = ExtResource("1_hfb3y")
@@ -36,3 +42,44 @@ shape = SubResource("RectangleShape2D_jnyf0")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=155963628]
 position = Vector2(160, 643)
 shape = SubResource("RectangleShape2D_bqb0t")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1093523281]
+
+[node name="LinesTextLabel" type="HBoxContainer" parent="UI" unique_id=66637436]
+offset_left = 336.0
+offset_right = 409.0
+offset_bottom = 40.0
+
+[node name="LinesLabel" type="Label" parent="UI/LinesTextLabel" unique_id=451357341]
+layout_mode = 2
+text = "Líneas: "
+
+[node name="LinesValue" type="Label" parent="UI/LinesTextLabel" unique_id=394710716]
+layout_mode = 2
+text = "0"
+
+[node name="LevelTextLabel" type="HBoxContainer" parent="UI" unique_id=992193953]
+offset_left = 336.0
+offset_top = 32.0
+offset_right = 398.0
+offset_bottom = 72.0
+
+[node name="LevelLabel" type="Label" parent="UI/LevelTextLabel" unique_id=63036758]
+layout_mode = 2
+text = "Nivel: "
+
+[node name="LevelValue" type="Label" parent="UI/LevelTextLabel" unique_id=958649619]
+layout_mode = 2
+text = "1"
+
+[node name="NextPiecePreview" type="Node2D" parent="UI" unique_id=805323119]
+position = Vector2(368, 88)
+
+[node name="GameOverLabel" type="Label" parent="UI" unique_id=751810273]
+visible = false
+offset_left = 40.0
+offset_top = 192.0
+offset_right = 280.0
+offset_bottom = 250.0
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_7x8du")
