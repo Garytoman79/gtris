@@ -6,13 +6,14 @@ extends Node2D
 const BLOCK_SIZE = 32
 const COLUMNS = 10
 const ROWS = 20
-const NORMAL_SPEED = 0.5
 const DROP_SPEED = 0.05
 const LINES_PER_LEVEL = 10
 const SPEED_DECREASE_PER_LEVEL = 0.05 # cuánto se reduce el intervalo por nivel
 const MIN_SPEED = 0.1 # velocidad máxima (no bajar de este intervalo)
 const DAS_DELAY = 0.25      # tiempo antes de empezar a repetir
 const DAS_SPEED = 0.1     # velocidad de repetición una vez arrancado
+const HUD_WIDTH = 190
+const LAYOUT_GAP = 32
 #endregion
 
 
@@ -47,6 +48,9 @@ var pieces: Array[PackedScene] = [
 #region Ciclo de vida de Godot
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_viewport().size_changed.connect(center_playfield)
+	center_playfield()
+	
 	for y in range(ROWS):
 		var row = []
 		for x in range(COLUMNS):
@@ -88,7 +92,7 @@ func spawn_piece(start_col: int, start_row: int):
 	var scene_to_spawn = next_piece_scene
 	
 	current_piece = scene_to_spawn.instantiate()
-	add_child(current_piece)
+	$GameLayout/Playfield.add_child(current_piece)
 	current_piece.position = Vector2(start_col * BLOCK_SIZE, start_row * BLOCK_SIZE)
 	
 	if is_spawn_blocked():
@@ -110,11 +114,35 @@ func spawn_next_piece():
 
 
 func update_next_piece_preview() -> void:
-	for child in $UI/NextPiecePreview.get_children():
+	for child in $GameLayout/HUD/NextPiecePreview.get_children():
 		child.queue_free()
 		
 	var preview_instance = next_piece_scene.instantiate()
-	$UI/NextPiecePreview.add_child(preview_instance)
+	$GameLayout/HUD/NextPiecePreview.add_child(preview_instance)
+	center_preview_piece(preview_instance)
+	
+	
+func center_preview_piece(piece: Node2D) -> void:
+	var min_x := INF
+	var min_y := INF
+	var max_x := -INF
+	var max_y := -INF
+
+	for child in piece.get_node("CanvasGroup").get_children():
+		var block := child as Node2D
+		var block_position := piece.to_local(block.global_position)
+
+		min_x = minf(min_x, block_position.x)
+		min_y = minf(min_y, block_position.y)
+		max_x = maxf(max_x, block_position.x + BLOCK_SIZE)
+		max_y = maxf(max_y, block_position.y + BLOCK_SIZE)
+
+	var piece_center := Vector2(
+		(min_x + max_x) / 2.0,
+		(min_y + max_y) / 2.0
+	)
+
+	piece.position = -piece_center
 #endregion
 
 
@@ -256,10 +284,27 @@ func can_move_horizontal(direction: int) -> bool:
 	
 	
 func get_grid_cell(block: Node2D) -> Vector2i:
-	var world_pos = block.global_position - global_position
+	var world_pos = block.global_position - $GameLayout/Playfield.global_position
 	var col = int(world_pos.x / BLOCK_SIZE)
 	var row = int(world_pos.y / BLOCK_SIZE)
 	return Vector2i(col, row)
+	
+	
+func center_playfield() -> void:
+	var viewport_size = get_viewport_rect().size
+	var board_width = COLUMNS * BLOCK_SIZE
+	var board_height = ROWS * BLOCK_SIZE
+	var layout_width = HUD_WIDTH + LAYOUT_GAP + board_width
+	
+	$TextureRect.position = Vector2.ZERO
+	$TextureRect.size = viewport_size
+	
+	$GameLayout.position = Vector2(
+		(viewport_size.x - layout_width) / 2.0,
+		(viewport_size.y - board_height) / 2.0
+	)
+
+	$GameLayout/Playfield.position = Vector2(HUD_WIDTH + LAYOUT_GAP, 0)
 #endregion
 
 
@@ -311,14 +356,14 @@ func move_rows_down(from_row: int):
 
 func update_lines_and_level(new_lines: int) -> void:
 	lines_cleared += new_lines
-	$UI/LinesTextLabel/LinesValue.text = str(lines_cleared)
+	$GameLayout/HUD/LinesTextLabel/LinesValue.text = str(lines_cleared)
 	
 	@warning_ignore("integer_division")
 	var new_level = 1 + (lines_cleared / LINES_PER_LEVEL)
 	
 	if new_level != level:
 		level = new_level
-		$UI/LevelTextLabel/LevelValue.text = str(level)
+		$GameLayout/HUD/LevelTextLabel/LevelValue.text = str(level)
 #endregion
 
 
@@ -335,5 +380,5 @@ func trigger_game_over() -> void:
 	is_game_over = true
 	set_process(false)
 	set_physics_process(false)
-	$UI/GameOverLabel.visible = true
+	$GameLayout/HUD/GameOverLabel.visible = true
 #endregion
