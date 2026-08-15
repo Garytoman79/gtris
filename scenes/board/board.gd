@@ -430,4 +430,5 @@ func trigger_game_over() -> void:
 	set_physics_process(false)
 	$GameLayout/HUD/GameOverLabel.visible = true
 	$GameOverSound.play()
+	$BackgroundMusic.stop()
 #endregion

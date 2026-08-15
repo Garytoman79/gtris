@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://dc6aye0ammvi3"]
+
+[ext_resource type="Script" uid="uid://bb6xreo6q5tk0" path="res://scenes/main_menu/main_menu.gd" id="1_fsom3"]
+[ext_resource type="Theme" uid="uid://booqr7dmjck4w" path="res://assets/themes/gtris_theme.tres" id="1_ob46e"]
+[ext_resource type="FontFile" uid="uid://2ohy7y5an0go" path="res://assets/fonts/Oxanium-Bold.ttf" id="3_ob46e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inhj3"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.33333334, 0.33333334, 0.33333334, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6627451, 0.6627451, 0.6627451, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ebjn"]
+content_margin_left = 16.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.55138963, 0.55138963, 0.55138963, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6627451, 0.6627451, 0.6627451, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="MainMenu" type="Control" unique_id=1626327264]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ob46e")
+script = ExtResource("1_fsom3")
+
+[node name="MenuContainer" type="VBoxContainer" parent="." unique_id=2147237476]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="MenuContainer" unique_id=1171751812]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ob46e")
+theme_override_font_sizes/font_size = 42
+text = "GTRIS"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="MenuContainer" unique_id=112194491]
+layout_mode = 2
+
+[node name="ControlsButton" type="Button" parent="MenuContainer" unique_id=1469090716]
+layout_mode = 2
+
+[node name="LanguageButton" type="Button" parent="MenuContainer" unique_id=820270113]
+layout_mode = 2
+
+[node name="LanguageOptionButton" type="OptionButton" parent="MenuContainer" unique_id=1614491264]
+visible = false
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_inhj3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+
+[node name="ExitButton" type="Button" parent="MenuContainer" unique_id=1782896375]
+layout_mode = 2
+
+[connection signal="pressed" from="MenuContainer/LanguageButton" to="." method="_on_language_button_pressed"]
+[connection signal="item_selected" from="MenuContainer/LanguageOptionButton" to="." method="_on_language_option_button_item_selected"]
