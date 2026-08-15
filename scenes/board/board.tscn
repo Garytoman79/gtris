@@ -2,18 +2,14 @@
 
 [ext_resource type="Script" uid="uid://c65jao75mn2nw" path="res://scenes/board/board.gd" id="1_hfb3y"]
 [ext_resource type="Texture2D" uid="uid://ed3g06gvb3tg" path="res://assets/background.png" id="2_jnyf0"]
+[ext_resource type="AudioStream" uid="uid://blbidmx7lscvg" path="res://assets/sounds/gtris_music_loop.wav" id="3_c6wwm"]
 [ext_resource type="AudioStream" uid="uid://da41wp2xw5gil" path="res://assets/sounds/rotate_right.wav" id="3_q07he"]
 [ext_resource type="AudioStream" uid="uid://brpn5o5kmfjax" path="res://assets/sounds/land.wav" id="4_ci4ar"]
 [ext_resource type="AudioStream" uid="uid://bjahybvsif07a" path="res://assets/sounds/rotate_left.wav" id="4_kymhv"]
 [ext_resource type="AudioStream" uid="uid://cj0wjb4llj0cg" path="res://assets/sounds/level_up.wav" id="5_c6wwm"]
 [ext_resource type="AudioStream" uid="uid://c8xd3y4wxie1n" path="res://assets/sounds/line_clear.wav" id="5_exf0g"]
-[ext_resource type="AudioStream" path="res://assets/sounds/tetris_1.wav" id="5_rpdi3"]
-[ext_resource type="AudioStream" path="res://assets/sounds/tetris_2.wav" id="6_c6wwm"]
-[ext_resource type="AudioStream" path="res://assets/sounds/tetris_3.wav" id="6_dej46"]
 [ext_resource type="AudioStream" uid="uid://cjkj5yp6pl8a2" path="res://assets/sounds/game_over.wav" id="6_hxlvt"]
 [ext_resource type="AudioStream" uid="uid://dqi0cagdogtki" path="res://assets/sounds/tetris.wav" id="7_dj4mb"]
-[ext_resource type="AudioStream" path="res://assets/sounds/game_over_1.wav" id="9_w0prs"]
-[ext_resource type="AudioStream" path="res://assets/sounds/game_over_2.wav" id="10_hxlvt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s78fa"]
 size = Vector2(6, 640)
@@ -53,6 +49,10 @@ texture = ExtResource("2_jnyf0")
 expand_mode = 1
 stretch_mode = 6
 
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=194498653]
+stream = ExtResource("3_c6wwm")
+autoplay = true
+
 [node name="RotateRightSound" type="AudioStreamPlayer" parent="." unique_id=53437452]
 stream = ExtResource("3_q07he")
 
@@ -67,21 +67,6 @@ stream = ExtResource("6_hxlvt")
 
 [node name="TetrisSound" type="AudioStreamPlayer" parent="." unique_id=724640896]
 stream = ExtResource("7_dj4mb")
-
-[node name="TetrisSound1" type="AudioStreamPlayer" parent="." unique_id=1761628849]
-stream = ExtResource("5_rpdi3")
-
-[node name="TetrisSound2" type="AudioStreamPlayer" parent="." unique_id=469224671]
-stream = ExtResource("6_c6wwm")
-
-[node name="TetrisSound3" type="AudioStreamPlayer" parent="." unique_id=509561933]
-stream = ExtResource("6_dej46")
-
-[node name="GameOverSound1" type="AudioStreamPlayer" parent="." unique_id=2037490529]
-stream = ExtResource("9_w0prs")
-
-[node name="GameOverSound2" type="AudioStreamPlayer" parent="." unique_id=915768255]
-stream = ExtResource("10_hxlvt")
 
 [node name="LineClearSound" type="AudioStreamPlayer" parent="." unique_id=1145206091]
 stream = ExtResource("5_exf0g")
