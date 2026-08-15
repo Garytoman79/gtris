@@ -2,6 +2,15 @@
 
 [ext_resource type="Script" uid="uid://c65jao75mn2nw" path="res://scenes/board/board.gd" id="1_hfb3y"]
 [ext_resource type="Texture2D" uid="uid://ed3g06gvb3tg" path="res://assets/background.png" id="2_jnyf0"]
+[ext_resource type="AudioStream" uid="uid://blbidmx7lscvg" path="res://assets/sounds/gtris_music_loop.wav" id="3_c6wwm"]
+[ext_resource type="AudioStream" uid="uid://da41wp2xw5gil" path="res://assets/sounds/rotate_right.wav" id="3_q07he"]
+[ext_resource type="AudioStream" uid="uid://brpn5o5kmfjax" path="res://assets/sounds/land.wav" id="4_ci4ar"]
+[ext_resource type="AudioStream" uid="uid://bjahybvsif07a" path="res://assets/sounds/rotate_left.wav" id="4_kymhv"]
+[ext_resource type="AudioStream" uid="uid://cj0wjb4llj0cg" path="res://assets/sounds/level_up.wav" id="5_c6wwm"]
+[ext_resource type="AudioStream" uid="uid://c8xd3y4wxie1n" path="res://assets/sounds/line_clear.wav" id="5_exf0g"]
+[ext_resource type="AudioStream" uid="uid://cjkj5yp6pl8a2" path="res://assets/sounds/game_over.wav" id="6_hxlvt"]
+[ext_resource type="AudioStream" uid="uid://dqi0cagdogtki" path="res://assets/sounds/tetris.wav" id="7_dj4mb"]
+[ext_resource type="FontFile" uid="uid://2ohy7y5an0go" path="res://assets/fonts/Oxanium-Bold.ttf" id="11_k8r4w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s78fa"]
 size = Vector2(6, 640)
@@ -40,6 +49,31 @@ grow_vertical = 2
 texture = ExtResource("2_jnyf0")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="." unique_id=194498653]
+stream = ExtResource("3_c6wwm")
+autoplay = true
+
+[node name="RotateRightSound" type="AudioStreamPlayer" parent="." unique_id=53437452]
+stream = ExtResource("3_q07he")
+
+[node name="LandSound" type="AudioStreamPlayer" parent="." unique_id=625676550]
+stream = ExtResource("4_ci4ar")
+
+[node name="LevelUpSound" type="AudioStreamPlayer" parent="." unique_id=1268062109]
+stream = ExtResource("5_c6wwm")
+
+[node name="GameOverSound" type="AudioStreamPlayer" parent="." unique_id=2116436119]
+stream = ExtResource("6_hxlvt")
+
+[node name="TetrisSound" type="AudioStreamPlayer" parent="." unique_id=724640896]
+stream = ExtResource("7_dj4mb")
+
+[node name="LineClearSound" type="AudioStreamPlayer" parent="." unique_id=1145206091]
+stream = ExtResource("5_exf0g")
+
+[node name="RotateLeftSound" type="AudioStreamPlayer" parent="." unique_id=66285518]
+stream = ExtResource("4_kymhv")
 
 [node name="GameLayout" type="Node2D" parent="." unique_id=1885207004]
 position = Vector2(305, 4)
@@ -81,37 +115,32 @@ shape = SubResource("RectangleShape2D_bqb0t")
 
 [node name="StatsPanel" type="Panel" parent="GameLayout/HUD" unique_id=393898156]
 offset_left = -25.0
-offset_top = 212.0
+offset_top = 124.0
 offset_right = 175.0
-offset_bottom = 284.0
+offset_bottom = 196.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
 
 [node name="NextPanel" type="Panel" parent="GameLayout/HUD" unique_id=297329657]
 offset_left = -25.0
-offset_top = 316.0
+offset_top = 236.0
 offset_right = 175.0
-offset_bottom = 516.0
+offset_bottom = 436.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
 
-[node name="LinesTextLabel" type="HBoxContainer" parent="GameLayout/HUD" unique_id=66637436]
-offset_left = 39.0
-offset_top = 244.0
-offset_right = 112.0
-offset_bottom = 284.0
-
-[node name="LinesLabel" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=451357341]
-layout_mode = 2
-text = "Líneas: "
-
-[node name="LinesValue" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=394710716]
-layout_mode = 2
-text = "0"
+[node name="GameTitle" type="Label" parent="GameLayout/HUD" unique_id=1385774525]
+offset_left = 7.0
+offset_top = 44.0
+offset_right = 143.0
+offset_bottom = 93.0
+theme_override_fonts/font = ExtResource("11_k8r4w")
+theme_override_font_sizes/font_size = 48
+text = "GTRIS"
 
 [node name="LevelTextLabel" type="HBoxContainer" parent="GameLayout/HUD" unique_id=992193953]
-offset_left = 39.0
-offset_top = 212.0
-offset_right = 101.0
-offset_bottom = 252.0
+offset_left = 31.0
+offset_top = 124.0
+offset_right = 117.0
+offset_bottom = 164.0
 
 [node name="LevelLabel" type="Label" parent="GameLayout/HUD/LevelTextLabel" unique_id=63036758]
 layout_mode = 2
@@ -121,8 +150,22 @@ text = "Nivel: "
 layout_mode = 2
 text = "1"
 
+[node name="LinesTextLabel" type="HBoxContainer" parent="GameLayout/HUD" unique_id=66637436]
+offset_left = 23.0
+offset_top = 156.0
+offset_right = 125.0
+offset_bottom = 196.0
+
+[node name="LinesLabel" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=451357341]
+layout_mode = 2
+text = "Líneas: "
+
+[node name="LinesValue" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=394710716]
+layout_mode = 2
+text = "0"
+
 [node name="NextPiecePreview" type="Node2D" parent="GameLayout/HUD" unique_id=805323119]
-position = Vector2(93, 446)
+position = Vector2(95, 372)
 
 [node name="GameOverLabel" type="Label" parent="GameLayout/HUD" unique_id=751810273]
 visible = false
@@ -134,8 +177,8 @@ text = "GAME  OVER"
 label_settings = SubResource("LabelSettings_7x8du")
 
 [node name="NextTitle" type="Label" parent="GameLayout/HUD" unique_id=358288067]
-offset_left = 36.0
-offset_top = 328.0
-offset_right = 118.0
-offset_bottom = 351.0
+offset_left = 15.0
+offset_top = 260.0
+offset_right = 134.0
+offset_bottom = 285.0
 text = "SIGUIENTE"

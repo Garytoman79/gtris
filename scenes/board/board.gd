@@ -8,10 +8,10 @@ const COLUMNS = 10
 const ROWS = 20
 const DROP_SPEED = 0.05
 const LINES_PER_LEVEL = 10
-const SPEED_DECREASE_PER_LEVEL = 0.05 # cuánto se reduce el intervalo por nivel
-const MIN_SPEED = 0.1 # velocidad máxima (no bajar de este intervalo)
-const DAS_DELAY = 0.25      # tiempo antes de empezar a repetir
-const DAS_SPEED = 0.1     # velocidad de repetición una vez arrancado
+const SPEED_DECREASE_PER_LEVEL = 0.1 	# cuánto se reduce el intervalo por nivel
+const MIN_SPEED = 0.1 					# velocidad máxima (no bajar de este intervalo)
+const DAS_DELAY = 0.25      			# tiempo antes de empezar a repetir
+const DAS_SPEED = 0.1     				# velocidad de repetición una vez arrancado
 const HUD_WIDTH = 190
 const LAYOUT_GAP = 32
 #endregion
@@ -66,8 +66,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	handle_horizontal_input(delta)
 	
-	if Input.is_action_just_pressed("rotate"):
-		rotate_piece()
+	if Input.is_action_just_pressed("rotate_right"):
+		if rotate_piece_right():
+			$RotateRightSound.play()
+	if Input.is_action_just_pressed("rotate_left"):
+		if rotate_piece_left():
+			$RotateLeftSound.play()
 		
 		
 func _physics_process(delta: float) -> void:
@@ -157,6 +161,7 @@ func move_piece_down():
 	
 func lock_piece():
 	register_piece_in_grid(current_piece)
+	$LandSound.play()
 	clear_completed_lines()
 	call_deferred("spawn_next_piece")
 
@@ -211,7 +216,7 @@ func try_move_horizontal(direction: int) -> void:
 
 
 #region Rotación
-func rotate_piece():
+func rotate_piece_right() -> bool:
 	var canvas_group = current_piece.get_node("CanvasGroup")
 	var pivot = current_piece.get_node("Pivot").position
 	var new_positions = []
@@ -229,20 +234,58 @@ func rotate_piece():
 		var blocks = canvas_group.get_children()
 		for i in range(blocks.size()):
 			blocks[i].position = new_positions[i]
+		
+		return true
+			
+	return false
+	
+			
+func rotate_piece_left() -> bool:
+	var canvas_group = current_piece.get_node("CanvasGroup")
+	var pivot = current_piece.get_node("Pivot").position
+	var new_positions = []
+	
+	for block in canvas_group.get_children():
+		var rel_x = (block.position.x - pivot.x) / BLOCK_SIZE
+		var rel_y = (block.position.y - pivot.y) / BLOCK_SIZE
+		var new_rel_x = -rel_y
+		var new_rel_y = rel_x
+		var new_pos = pivot - Vector2(new_rel_x * BLOCK_SIZE, new_rel_y * BLOCK_SIZE)
+		
+		new_positions.append(new_pos)
+		
+	if can_rotate(new_positions):
+		var blocks = canvas_group.get_children()
+		for i in range(blocks.size()):
+			blocks[i].position = new_positions[i]
+			
+		return true
+		
+	return false
 
 
 func can_rotate(new_positions: Array) -> bool:
+	var canvas_group = current_piece.get_node("CanvasGroup")
+
 	for pos in new_positions:
-		var world_pos = current_piece.position + pos
-		var col = int(world_pos.x / BLOCK_SIZE)
-		var row = int(world_pos.y / BLOCK_SIZE)
-		
+		# Posición futura del bloque, expresada dentro de Playfield.
+		var position_in_playfield = (
+			current_piece.position
+			+ canvas_group.position
+			+ pos
+		)
+
+		# floori() conserva correctamente los negativos:
+		# -0.5 pasa a -1, no a 0.
+		var col = floori(position_in_playfield.x / BLOCK_SIZE)
+		var row = floori(position_in_playfield.y / BLOCK_SIZE)
+
 		if col < 0 or col >= COLUMNS or row < 0 or row >= ROWS:
 			return false
-		
+
 		if grid[row][col] != null:
 			return false
-	
+
 	return true
 #endregion
 
@@ -285,8 +328,8 @@ func can_move_horizontal(direction: int) -> bool:
 	
 func get_grid_cell(block: Node2D) -> Vector2i:
 	var world_pos = block.global_position - $GameLayout/Playfield.global_position
-	var col = int(world_pos.x / BLOCK_SIZE)
-	var row = int(world_pos.y / BLOCK_SIZE)
+	var col = floori(world_pos.x / BLOCK_SIZE)
+	var row = floori(world_pos.y / BLOCK_SIZE)
 	return Vector2i(col, row)
 	
 	
@@ -335,8 +378,12 @@ func clear_completed_lines():
 			
 	if cleared_this_turn > 0:
 		update_lines_and_level(cleared_this_turn)
-			
-			
+		if cleared_this_turn < 4:
+			$LineClearSound.play()
+		else:
+			$TetrisSound.play()
+	
+	
 func remove_row(row: int):
 	for col in range(COLUMNS):
 		grid[row][col].queue_free()
@@ -364,6 +411,7 @@ func update_lines_and_level(new_lines: int) -> void:
 	if new_level != level:
 		level = new_level
 		$GameLayout/HUD/LevelTextLabel/LevelValue.text = str(level)
+		$LevelUpSound.play()
 #endregion
 
 
@@ -381,4 +429,6 @@ func trigger_game_over() -> void:
 	set_process(false)
 	set_physics_process(false)
 	$GameLayout/HUD/GameOverLabel.visible = true
+	$GameOverSound.play()
+	$BackgroundMusic.stop()
 #endregion

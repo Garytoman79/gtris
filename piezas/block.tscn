@@ -1,11 +1,20 @@
 [gd_scene format=3 uid="uid://b5b0nnbid0q2x"]
 
+[ext_resource type="Shader" uid="uid://dtlurerjpkwrm" path="res://shaders/bisel_pieza.gdshader" id="1_pffgg"]
 [ext_resource type="Texture2D" uid="uid://kfb2fxnoahqv" path="res://assets/block_white.png" id="1_re6rn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0iwhy"]
+shader = ExtResource("1_pffgg")
+shader_parameter/color_luz = Color(0.75, 0.92, 1, 1)
+shader_parameter/color_sombra = Color(0.02, 0.08, 0.16, 1)
+shader_parameter/tamano_bisel = 3.0
+shader_parameter/grosor_borde = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t85kk"]
 size = Vector2(32, 32)
 
 [node name="Block" type="Sprite2D" unique_id=496182608]
+material = SubResource("ShaderMaterial_0iwhy")
 texture = ExtResource("1_re6rn")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=626199923]
