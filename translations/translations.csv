@@ -4,4 +4,8 @@ MENU_CONTROLS,Controls,Controles,Contrôles
 MENU_LANGUAGE,Language,Idioma,Langue
 MENU_EXIT,Exit,Salir,Quitter
 ,,,
+QUIT_CONFIRM_TEXT,Do you want to quit the game?,¿Quieres salir de la partida?,Voulez-vous quitter la partie?
+QUIT_CONFIRM_CONTINUE,Continue,Continuar,Continuer
+QUIT_CONFIRM_EXIT,Quit,Salir,Quitter
+,,,
 LANG_NAME,English,Español,Français

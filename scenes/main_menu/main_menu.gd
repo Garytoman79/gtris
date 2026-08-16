@@ -6,8 +6,8 @@ func _ready() -> void:
 	set_language()
 	set_menu()	
 	set_language_options()
-
-
+	
+	
 func set_language() -> void:
 	var saved_lang = load_language()
 	var available_langs = TranslationServer.get_loaded_locales()
@@ -69,8 +69,8 @@ func load_language() -> String:
 		return config.get_value("settings", "language", "")
 	
 	return ""
-	
-	
+		
+		
 func _on_language_option_button_item_selected(index: int) -> void:
 	var selected_lang = $MenuContainer/LanguageOptionButton.get_item_metadata(index)
 	
@@ -83,3 +83,11 @@ func _on_language_option_button_item_selected(index: int) -> void:
 
 func _on_language_button_pressed() -> void:
 	$MenuContainer/LanguageOptionButton.visible = not $MenuContainer/LanguageOptionButton.visible
+
+
+func _on_play_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/board/board.tscn")
+
+
+func _on_exit_button_pressed() -> void:
+	get_tree().quit()

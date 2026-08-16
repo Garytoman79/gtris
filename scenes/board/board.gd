@@ -50,6 +50,7 @@ var pieces: Array[PackedScene] = [
 func _ready() -> void:
 	get_viewport().size_changed.connect(center_playfield)
 	center_playfield()
+	prepare_pause_dialog()
 	
 	for y in range(ROWS):
 		var row = []
@@ -88,6 +89,19 @@ func _physics_process(delta: float) -> void:
 	if gravity_time >= interval:
 		gravity_time = 0.0
 		move_piece_down()
+		
+		
+# Pausa y dialogo para Salir/Continuar
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		$QuitConfirmationDialog.popup_centered()
+		get_tree().paused = true
+		
+		
+func prepare_pause_dialog() -> void:
+	$QuitConfirmationDialog.dialog_text = tr("QUIT_CONFIRM_TEXT")
+	$QuitConfirmationDialog.get_ok_button().text = tr("QUIT_CONFIRM_EXIT")
+	$QuitConfirmationDialog.get_cancel_button().text = tr("QUIT_CONFIRM_CONTINUE")
 #endregion
 
 
@@ -432,3 +446,12 @@ func trigger_game_over() -> void:
 	$GameOverSound.play()
 	$BackgroundMusic.stop()
 #endregion
+
+
+func _on_quit_confirmation_dialog_canceled() -> void:
+	get_tree().paused = false
+
+
+func _on_quit_confirmation_dialog_confirmed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")

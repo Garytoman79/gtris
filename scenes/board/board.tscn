@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://cjkj5yp6pl8a2" path="res://assets/sounds/game_over.wav" id="6_hxlvt"]
 [ext_resource type="AudioStream" uid="uid://dqi0cagdogtki" path="res://assets/sounds/tetris.wav" id="7_dj4mb"]
 [ext_resource type="FontFile" uid="uid://2ohy7y5an0go" path="res://assets/fonts/Oxanium-Bold.ttf" id="11_k8r4w"]
+[ext_resource type="Theme" uid="uid://cywcp4p8o508q" path="res://assets/themes/gtris_ui_theme.tres" id="11_w0prs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s78fa"]
 size = Vector2(6, 640)
@@ -75,6 +76,11 @@ stream = ExtResource("5_exf0g")
 [node name="RotateLeftSound" type="AudioStreamPlayer" parent="." unique_id=66285518]
 stream = ExtResource("4_kymhv")
 
+[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=1414276790]
+process_mode = 2
+borderless = true
+theme = ExtResource("11_w0prs")
+
 [node name="GameLayout" type="Node2D" parent="." unique_id=1885207004]
 position = Vector2(305, 4)
 
@@ -132,6 +138,7 @@ offset_left = 7.0
 offset_top = 44.0
 offset_right = 143.0
 offset_bottom = 93.0
+theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("11_k8r4w")
 theme_override_font_sizes/font_size = 48
 text = "GTRIS"
@@ -165,7 +172,7 @@ layout_mode = 2
 text = "0"
 
 [node name="NextPiecePreview" type="Node2D" parent="GameLayout/HUD" unique_id=805323119]
-position = Vector2(95, 372)
+position = Vector2(91, 372)
 
 [node name="GameOverLabel" type="Label" parent="GameLayout/HUD" unique_id=751810273]
 visible = false
@@ -182,3 +189,6 @@ offset_top = 260.0
 offset_right = 134.0
 offset_bottom = 285.0
 text = "SIGUIENTE"
+
+[connection signal="canceled" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_canceled"]
+[connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
