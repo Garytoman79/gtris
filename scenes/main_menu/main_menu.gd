@@ -25,10 +25,10 @@ func set_language() -> void:
 		
 		
 func set_menu() -> void:
-	$MenuContainer/PlayButton.text = tr("MENU_PLAY")
-	$MenuContainer/ControlsButton.text = tr("MENU_CONTROLS")
-	$MenuContainer/LanguageButton.text = tr("MENU_LANGUAGE")
-	$MenuContainer/ExitButton.text = tr("MENU_EXIT")
+	$PanelContainer/MenuContainer/PlayButton.text = tr("MENU_PLAY")
+	$PanelContainer/MenuContainer/ControlsButton.text = tr("MENU_CONTROLS")
+	$PanelContainer/MenuContainer/LanguageButton.text = tr("MENU_LANGUAGE")
+	$PanelContainer/MenuContainer/ExitButton.text = tr("MENU_EXIT")
 
 
 func set_language_options() -> void:
@@ -38,9 +38,9 @@ func set_language_options() -> void:
 		var translation = TranslationServer.get_translation_object(lang)
 		var language_name = translation.get_message("LANG_NAME")
 		
-		$MenuContainer/LanguageOptionButton.add_item(language_name)
-		$MenuContainer/LanguageOptionButton.set_item_metadata(
-			$MenuContainer/LanguageOptionButton.item_count - 1,
+		$PanelContainer/MenuContainer/LanguageOptionButton.add_item(language_name)
+		$PanelContainer/MenuContainer/LanguageOptionButton.set_item_metadata(
+			$PanelContainer/MenuContainer/LanguageOptionButton.item_count - 1,
 			lang
 		)
 
@@ -50,9 +50,9 @@ func set_language_options() -> void:
 func set_current_lang() -> void:
 	var current_lang = TranslationServer.get_locale()
 	
-	for i in range($MenuContainer/LanguageOptionButton.item_count):
-		if $MenuContainer/LanguageOptionButton.get_item_metadata(i) == current_lang:
-			$MenuContainer/LanguageOptionButton.select(i)
+	for i in range($PanelContainer/MenuContainer/LanguageOptionButton.item_count):
+		if $PanelContainer/MenuContainer/LanguageOptionButton.get_item_metadata(i) == current_lang:
+			$PanelContainer/MenuContainer/LanguageOptionButton.select(i)
 			break
 			
 			
@@ -72,17 +72,17 @@ func load_language() -> String:
 		
 		
 func _on_language_option_button_item_selected(index: int) -> void:
-	var selected_lang = $MenuContainer/LanguageOptionButton.get_item_metadata(index)
+	var selected_lang = $PanelContainer/MenuContainer/LanguageOptionButton.get_item_metadata(index)
 	
 	TranslationServer.set_locale(selected_lang)
 	set_menu()
 	save_language(selected_lang)
 	
-	$MenuContainer/LanguageOptionButton.visible = false
+	$PanelContainer/MenuContainer/LanguageOptionButton.visible = false
 
 
 func _on_language_button_pressed() -> void:
-	$MenuContainer/LanguageOptionButton.visible = not $MenuContainer/LanguageOptionButton.visible
+	$PanelContainer/MenuContainer/LanguageOptionButton.visible = not $PanelContainer/MenuContainer/LanguageOptionButton.visible
 
 
 func _on_play_button_pressed() -> void:
