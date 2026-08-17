@@ -82,6 +82,7 @@ layout_mode = 2
 theme = ExtResource("4_uqeha")
 
 [connection signal="pressed" from="PanelContainer/MenuContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MenuContainer/ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MenuContainer/LanguageButton" to="." method="_on_language_button_pressed"]
 [connection signal="item_selected" from="PanelContainer/MenuContainer/LanguageOptionButton" to="." method="_on_language_option_button_item_selected"]
 [connection signal="pressed" from="PanelContainer/MenuContainer/ExitButton" to="." method="_on_exit_button_pressed"]

@@ -29,6 +29,10 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.11764706, 0.47058824, 0.8156863, 0.627451)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_7x8du"]
 font_size = 42
@@ -144,28 +148,29 @@ theme_override_font_sizes/font_size = 48
 text = "GTRIS"
 
 [node name="LevelTextLabel" type="HBoxContainer" parent="GameLayout/HUD" unique_id=992193953]
-offset_left = 31.0
-offset_top = 124.0
-offset_right = 117.0
-offset_bottom = 164.0
+offset_left = 24.0
+offset_top = 127.0
+offset_right = 126.0
+offset_bottom = 167.0
 
 [node name="LevelLabel" type="Label" parent="GameLayout/HUD/LevelTextLabel" unique_id=63036758]
+custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
-text = "Nivel: "
+size_flags_horizontal = 3
 
 [node name="LevelValue" type="Label" parent="GameLayout/HUD/LevelTextLabel" unique_id=958649619]
 layout_mode = 2
 text = "1"
 
 [node name="LinesTextLabel" type="HBoxContainer" parent="GameLayout/HUD" unique_id=66637436]
-offset_left = 23.0
-offset_top = 156.0
-offset_right = 125.0
-offset_bottom = 196.0
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 126.0
+offset_bottom = 198.0
 
 [node name="LinesLabel" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=451357341]
 layout_mode = 2
-text = "Líneas: "
+size_flags_horizontal = 3
 
 [node name="LinesValue" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=394710716]
 layout_mode = 2
@@ -185,10 +190,10 @@ label_settings = SubResource("LabelSettings_7x8du")
 
 [node name="NextTitle" type="Label" parent="GameLayout/HUD" unique_id=358288067]
 offset_left = 15.0
-offset_top = 260.0
+offset_top = 250.0
 offset_right = 134.0
-offset_bottom = 285.0
-text = "SIGUIENTE"
+offset_bottom = 275.0
+horizontal_alignment = 1
 
 [connection signal="canceled" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_canceled"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

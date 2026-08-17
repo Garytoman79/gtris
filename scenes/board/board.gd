@@ -50,6 +50,7 @@ var pieces: Array[PackedScene] = [
 func _ready() -> void:
 	get_viewport().size_changed.connect(center_playfield)
 	center_playfield()
+	set_ui()
 	prepare_pause_dialog()
 	
 	for y in range(ROWS):
@@ -59,6 +60,7 @@ func _ready() -> void:
 		grid.append(row)
 		
 	next_piece_scene = pieces.pick_random()
+	
 	update_next_piece_preview()
 	spawn_piece(5, 0)
 
@@ -102,6 +104,12 @@ func prepare_pause_dialog() -> void:
 	$QuitConfirmationDialog.dialog_text = tr("QUIT_CONFIRM_TEXT")
 	$QuitConfirmationDialog.get_ok_button().text = tr("QUIT_CONFIRM_EXIT")
 	$QuitConfirmationDialog.get_cancel_button().text = tr("QUIT_CONFIRM_CONTINUE")
+	
+	
+func set_ui() -> void:
+	$GameLayout/HUD/LevelTextLabel/LevelLabel.text = tr("BOARD_LEVEL")
+	$GameLayout/HUD/LinesTextLabel/LinesLabel.text = tr("BOARD_LINES")
+	$GameLayout/HUD/NextTitle.text = tr("BOARD_NEXT")
 #endregion
 
 

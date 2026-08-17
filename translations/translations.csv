@@ -9,3 +9,16 @@ QUIT_CONFIRM_CONTINUE,Continue,Continuar,Continuer
 QUIT_CONFIRM_EXIT,Quit,Salir,Quitter
 ,,,
 LANG_NAME,English,Español,Français
+,,,
+CONTROLS_LATERAL_MOVEMENT,Lateral movement,Desplazamiento lateral,Déplacement latéral
+CONTROLS_FAST_DOWN,Fast downward movement,Descenso rápido,Descente rapide
+CONTROLS_ROTATE_LEFT,Rotate left,Girar a la izquierda,Tourner à gauche
+CONTROLS_ROTATE_RIGHT,Rotate right,Girar a la derecha,Tourner à droite
+CONTROLS_PAUSE_EXIT,Pause / Exit,Pausa / Salir,Pause / Quitter
+MENU_BACK,Back,Volver,Retour
+,,,
+BOARD_LEVEL,Level,Nivel,Niveau
+BOARD_LINES,Lines,Líneas,Lignes
+BOARD_NEXT,NEXT,SIGUIENTE,SUIVANT
+BOARD_RECORD,Record,Récord,Record
+BOARD_PLAYER,Player,Jugador,Joueur
