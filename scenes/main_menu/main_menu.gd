@@ -3,13 +3,13 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	set_language()
-	set_menu()	
-	set_language_options()
+	_set_language()
+	_set_menu()	
+	_set_language_options()
 	
 	
-func set_language() -> void:
-	var saved_lang = load_language()
+func _set_language() -> void:
+	var saved_lang = _load_language()
 	var available_langs = TranslationServer.get_loaded_locales()
 	
 	if saved_lang != "" and saved_lang in available_langs:
@@ -24,14 +24,14 @@ func set_language() -> void:
 		TranslationServer.set_locale("en")
 		
 		
-func set_menu() -> void:
+func _set_menu() -> void:
 	$PanelContainer/MenuContainer/PlayButton.text = tr("MENU_PLAY")
 	$PanelContainer/MenuContainer/ControlsButton.text = tr("MENU_CONTROLS")
 	$PanelContainer/MenuContainer/LanguageButton.text = tr("MENU_LANGUAGE")
 	$PanelContainer/MenuContainer/ExitButton.text = tr("MENU_EXIT")
 
 
-func set_language_options() -> void:
+func _set_language_options() -> void:
 	var available_langs = TranslationServer.get_loaded_locales()
 	
 	for lang in available_langs:
@@ -44,10 +44,10 @@ func set_language_options() -> void:
 			lang
 		)
 
-	set_current_lang()
+	_set_current_lang()
 	
 
-func set_current_lang() -> void:
+func _set_current_lang() -> void:
 	var current_lang = TranslationServer.get_locale()
 	
 	for i in range($PanelContainer/MenuContainer/LanguageOptionButton.item_count):
@@ -56,13 +56,13 @@ func set_current_lang() -> void:
 			break
 			
 			
-func save_language(language: String) -> void:
+func _save_language(language: String) -> void:
 	var config = ConfigFile.new()
 	config.set_value("settings", "language", language)
 	config.save("user://settings.cfg")
 
 
-func load_language() -> String:
+func _load_language() -> String:
 	var config = ConfigFile.new()
 	
 	if config.load("user://settings.cfg") == OK:
@@ -75,8 +75,8 @@ func _on_language_option_button_item_selected(index: int) -> void:
 	var selected_lang = $PanelContainer/MenuContainer/LanguageOptionButton.get_item_metadata(index)
 	
 	TranslationServer.set_locale(selected_lang)
-	set_menu()
-	save_language(selected_lang)
+	_set_menu()
+	_save_language(selected_lang)
 	
 	$PanelContainer/MenuContainer/LanguageOptionButton.visible = false
 

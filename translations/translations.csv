@@ -22,3 +22,9 @@ BOARD_LINES,Lines,Líneas,Lignes
 BOARD_NEXT,NEXT,SIGUIENTE,SUIVANT
 BOARD_RECORD,Record,Récord,Record
 BOARD_PLAYER,Player,Jugador,Joueur
+,,,
+GAME_OVER_TITLE,Game Over,Fin de la partida,Fin de partie
+GAME_OVER_NEW_RECORD,New Record!,¡Nuevo récord!,Nouveau record!
+GAME_OVER_BACK_MENU,Back to Menu,Volver al menú,Retour au menu
+GAME_OVER_PLAYER_NAME,Player name,Nombre del jugador,Nom du joueur
+GAME_OVER_SAVE_RECORD,Save record,Guardar record,Enregistrer le record

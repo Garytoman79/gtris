@@ -34,11 +34,33 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="LabelSettings" id="LabelSettings_7x8du"]
-font_size = 42
-font_color = Color(5.4334817, 5.4334817, 0, 1)
-shadow_size = 5
-shadow_color = Color(0.23529412, 0.23529412, 0.23529412, 0.81960785)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t85kk"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 0.9019608)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.6, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w0prs"]
+content_margin_left = 8.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.050980393, 0.16470589, 0.27450982, 1)
+border_color = Color(0.11764706, 0.47058824, 0.8156863, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="Board" type="Node2D" unique_id=499583945]
 script = ExtResource("1_hfb3y")
@@ -179,15 +201,6 @@ text = "0"
 [node name="NextPiecePreview" type="Node2D" parent="GameLayout/HUD" unique_id=805323119]
 position = Vector2(91, 372)
 
-[node name="GameOverLabel" type="Label" parent="GameLayout/HUD" unique_id=751810273]
-visible = false
-offset_left = 255.0
-offset_top = 52.0
-offset_right = 495.0
-offset_bottom = 110.0
-text = "GAME  OVER"
-label_settings = SubResource("LabelSettings_7x8du")
-
 [node name="NextTitle" type="Label" parent="GameLayout/HUD" unique_id=358288067]
 offset_left = 15.0
 offset_top = 250.0
@@ -195,5 +208,43 @@ offset_right = 134.0
 offset_bottom = 275.0
 horizontal_alignment = 1
 
+[node name="GameOverPanel" type="PanelContainer" parent="GameLayout/HUD" unique_id=786532515]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t85kk")
+
+[node name="GameOverVBox" type="VBoxContainer" parent="GameLayout/HUD/GameOverPanel" unique_id=602350518]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="GameOverLabel" type="Label" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=1187321181]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NewRecordLabel" type="Label" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=502707044]
+visible = false
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RecordLinesLabel" type="Label" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=888486089]
+visible = false
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerNameLineEdit" type="LineEdit" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=1965224924]
+visible = false
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="GameOverActionButton" type="Button" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=255506677]
+layout_mode = 2
+theme = ExtResource("11_w0prs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_w0prs")
+
 [connection signal="canceled" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_canceled"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
+[connection signal="pressed" from="GameLayout/HUD/GameOverPanel/GameOverVBox/GameOverActionButton" to="." method="_on_game_over_action_button_pressed"]

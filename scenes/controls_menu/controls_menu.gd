@@ -2,10 +2,10 @@ extends Control
 
 
 func _ready() -> void:
-	set_controls_text()
+	_set_controls_text()
 
 
-func set_controls_text() -> void:
+func _set_controls_text() -> void:
 	$PanelContainer/VBoxContainer/TitleMarginContainer/TitleLabel.text = tr("MENU_CONTROLS")
 	$PanelContainer/VBoxContainer/RowsMarginContainer/RowsVBoxContainer/LateralMovementRow/MarginContainer/DescriptionLabel.text = tr("CONTROLS_LATERAL_MOVEMENT")
 	$PanelContainer/VBoxContainer/RowsMarginContainer/RowsVBoxContainer/DownMovementRow/MarginContainer/DescriptionLabel.text = tr("CONTROLS_FAST_DOWN")

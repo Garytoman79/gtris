@@ -27,8 +27,9 @@ var level := 1
 var das_timer := 0.0
 var das_direction := 0     # -1 izquierda, 1 derecha, 0 sin dirección activa
 var das_active := false    # si ya está en fase de repetición rápida
-var drop_locked:= false
-var is_game_over:= false
+var drop_locked := false
+var is_game_over := false
+var is_new_record := false
 #endregion
 
 
@@ -48,10 +49,11 @@ var pieces: Array[PackedScene] = [
 #region Ciclo de vida de Godot
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	get_viewport().size_changed.connect(center_playfield)
-	center_playfield()
-	set_ui()
-	prepare_pause_dialog()
+	get_viewport().size_changed.connect(_center_playfield)
+	_center_playfield()
+	$GameLayout/HUD/GameOverPanel.visible = false
+	_set_ui()
+	_prepare_pause_dialog()
 	
 	for y in range(ROWS):
 		var row = []
@@ -61,19 +63,19 @@ func _ready() -> void:
 		
 	next_piece_scene = pieces.pick_random()
 	
-	update_next_piece_preview()
-	spawn_piece(5, 0)
+	_update_next_piece_preview()
+	_spawn_piece(5, 0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	handle_horizontal_input(delta)
+	_handle_horizontal_input(delta)
 	
 	if Input.is_action_just_pressed("rotate_right"):
-		if rotate_piece_right():
+		if _rotate_piece_right():
 			$RotateRightSound.play()
 	if Input.is_action_just_pressed("rotate_left"):
-		if rotate_piece_left():
+		if _rotate_piece_left():
 			$RotateLeftSound.play()
 		
 		
@@ -83,14 +85,14 @@ func _physics_process(delta: float) -> void:
 	if drop_locked and not Input.is_action_pressed("move_down"):
 		drop_locked = false
 
-	var interval = get_current_speed()
+	var interval = _get_current_speed()
 
 	if Input.is_action_pressed("move_down") and not drop_locked:
 		interval = DROP_SPEED
 
 	if gravity_time >= interval:
 		gravity_time = 0.0
-		move_piece_down()
+		_move_piece_down()
 		
 		
 # Pausa y dialogo para Salir/Continuar
@@ -100,29 +102,35 @@ func _input(event: InputEvent) -> void:
 		get_tree().paused = true
 		
 		
-func prepare_pause_dialog() -> void:
+func _prepare_pause_dialog() -> void:
 	$QuitConfirmationDialog.dialog_text = tr("QUIT_CONFIRM_TEXT")
 	$QuitConfirmationDialog.get_ok_button().text = tr("QUIT_CONFIRM_EXIT")
 	$QuitConfirmationDialog.get_cancel_button().text = tr("QUIT_CONFIRM_CONTINUE")
 	
 	
-func set_ui() -> void:
+func _set_ui() -> void:
 	$GameLayout/HUD/LevelTextLabel/LevelLabel.text = tr("BOARD_LEVEL")
 	$GameLayout/HUD/LinesTextLabel/LinesLabel.text = tr("BOARD_LINES")
 	$GameLayout/HUD/NextTitle.text = tr("BOARD_NEXT")
+	
+	$GameLayout/HUD/GameOverPanel/GameOverVBox/GameOverLabel.text = tr("GAME_OVER_TITLE")
+	$GameLayout/HUD/GameOverPanel/GameOverVBox/NewRecordLabel.text = tr("GAME_OVER_NEW_RECORD")
+	$GameLayout/HUD/GameOverPanel/GameOverVBox/RecordLinesLabel.text = tr("BOARD_LINES")
+	$GameLayout/HUD/GameOverPanel/GameOverVBox/GameOverActionButton.text = tr("GAME_OVER_BACK_MENU")
+	$GameLayout/HUD/GameOverPanel/GameOverVBox/PlayerNameLineEdit.placeholder_text = tr("GAME_OVER_PLAYER_NAME")
 #endregion
 
 
 #region Spawn de piezas
-func spawn_piece(start_col: int, start_row: int):
+func _spawn_piece(start_col: int, start_row: int):
 	var scene_to_spawn = next_piece_scene
 	
 	current_piece = scene_to_spawn.instantiate()
 	$GameLayout/Playfield.add_child(current_piece)
 	current_piece.position = Vector2(start_col * BLOCK_SIZE, start_row * BLOCK_SIZE)
 	
-	if is_spawn_blocked():
-		trigger_game_over()
+	if _is_spawn_blocked():
+		_trigger_game_over()
 		return
 	
 	gravity_time = 0.0
@@ -132,23 +140,23 @@ func spawn_piece(start_col: int, start_row: int):
 	drop_locked = Input.is_action_pressed("move_down")
 	
 	next_piece_scene = pieces.pick_random()
-	update_next_piece_preview()
+	_update_next_piece_preview()
 	
 	
-func spawn_next_piece():
-	spawn_piece(5, 0)
+func _spawn_next_piece():
+	_spawn_piece(5, 0)
 
 
-func update_next_piece_preview() -> void:
+func _update_next_piece_preview() -> void:
 	for child in $GameLayout/HUD/NextPiecePreview.get_children():
 		child.queue_free()
 		
 	var preview_instance = next_piece_scene.instantiate()
 	$GameLayout/HUD/NextPiecePreview.add_child(preview_instance)
-	center_preview_piece(preview_instance)
+	_center_preview_piece(preview_instance)
 	
 	
-func center_preview_piece(piece: Node2D) -> void:
+func _center_preview_piece(piece: Node2D) -> void:
 	var min_x := INF
 	var min_y := INF
 	var max_x := -INF
@@ -173,22 +181,22 @@ func center_preview_piece(piece: Node2D) -> void:
 
 
 #region Movimiento y caída
-func move_piece_down():
-	if can_move_down():
+func _move_piece_down():
+	if _can_move_down():
 		current_piece.position.y += BLOCK_SIZE 
 		return
 		
-	lock_piece()
+	_lock_piece()
 	
 	
-func lock_piece():
-	register_piece_in_grid(current_piece)
+func _lock_piece():
+	_register_piece_in_grid(current_piece)
 	$LandSound.play()
-	clear_completed_lines()
-	call_deferred("spawn_next_piece")
+	_clear_completed_lines()
+	call_deferred("_spawn_next_piece")
 
 
-func get_current_speed() -> float:
+func _get_current_speed() -> float:
 	var speed = 0.5 - (level - 1) * SPEED_DECREASE_PER_LEVEL
 	
 	return max(speed, MIN_SPEED)
@@ -196,7 +204,7 @@ func get_current_speed() -> float:
 
 
 #region Movimiento lateral (DAS)
-func handle_horizontal_input(delta: float) -> void:
+func _handle_horizontal_input(delta: float) -> void:
 	var direction = 0
 	
 	if Input.is_action_pressed("move_left"):
@@ -215,7 +223,7 @@ func handle_horizontal_input(delta: float) -> void:
 		das_direction = direction
 		das_timer = 0.0
 		das_active = false
-		try_move_horizontal(direction)
+		_try_move_horizontal(direction)
 		return
 		
 	das_timer += delta
@@ -224,21 +232,21 @@ func handle_horizontal_input(delta: float) -> void:
 		if das_timer >= DAS_DELAY:
 			das_active = true
 			das_timer = 0.0
-			try_move_horizontal(direction)
+			_try_move_horizontal(direction)
 	else:
 		if das_timer >= DAS_SPEED:
 			das_timer = 0.0
-			try_move_horizontal(direction)
+			_try_move_horizontal(direction)
 	
 	
-func try_move_horizontal(direction: int) -> void:
-	if can_move_horizontal(direction):
+func _try_move_horizontal(direction: int) -> void:
+	if _can_move_horizontal(direction):
 		current_piece.position.x += direction * BLOCK_SIZE
 #endregion
 
 
 #region Rotación
-func rotate_piece_right() -> bool:
+func _rotate_piece_right() -> bool:
 	var canvas_group = current_piece.get_node("CanvasGroup")
 	var pivot = current_piece.get_node("Pivot").position
 	var new_positions = []
@@ -252,7 +260,7 @@ func rotate_piece_right() -> bool:
 		
 		new_positions.append(new_pos)
 		
-	if can_rotate(new_positions):
+	if _can_rotate(new_positions):
 		var blocks = canvas_group.get_children()
 		for i in range(blocks.size()):
 			blocks[i].position = new_positions[i]
@@ -262,7 +270,7 @@ func rotate_piece_right() -> bool:
 	return false
 	
 			
-func rotate_piece_left() -> bool:
+func _rotate_piece_left() -> bool:
 	var canvas_group = current_piece.get_node("CanvasGroup")
 	var pivot = current_piece.get_node("Pivot").position
 	var new_positions = []
@@ -276,7 +284,7 @@ func rotate_piece_left() -> bool:
 		
 		new_positions.append(new_pos)
 		
-	if can_rotate(new_positions):
+	if _can_rotate(new_positions):
 		var blocks = canvas_group.get_children()
 		for i in range(blocks.size()):
 			blocks[i].position = new_positions[i]
@@ -286,7 +294,7 @@ func rotate_piece_left() -> bool:
 	return false
 
 
-func can_rotate(new_positions: Array) -> bool:
+func _can_rotate(new_positions: Array) -> bool:
 	var canvas_group = current_piece.get_node("CanvasGroup")
 
 	for pos in new_positions:
@@ -313,16 +321,16 @@ func can_rotate(new_positions: Array) -> bool:
 
 
 #region Grid y colisiones
-func register_piece_in_grid(piece: Node2D):
+func _register_piece_in_grid(piece: Node2D):
 	for block in piece.get_node("CanvasGroup").get_children():
-		var cell = get_grid_cell(block)
+		var cell = _get_grid_cell(block)
 		
 		grid[cell.y][cell.x] = block
 	
 	
-func can_move_down() -> bool:
+func _can_move_down() -> bool:
 	for block in current_piece.get_node("CanvasGroup").get_children():
-		var cell = get_grid_cell(block)
+		var cell = _get_grid_cell(block)
 		var next_row = cell.y + 1
 		
 		if next_row >= ROWS:
@@ -335,9 +343,9 @@ func can_move_down() -> bool:
 	
 	
 # direction define hacia que lado se comprueba. izq: -1; dcha: 1
-func can_move_horizontal(direction: int) -> bool:
+func _can_move_horizontal(direction: int) -> bool:
 	for block in current_piece.get_node("CanvasGroup").get_children():
-		var cell = get_grid_cell(block)
+		var cell = _get_grid_cell(block)
 		var next_col = cell.x + direction
 		
 		if next_col < 0 or next_col >= COLUMNS:
@@ -348,18 +356,19 @@ func can_move_horizontal(direction: int) -> bool:
 	return true
 	
 	
-func get_grid_cell(block: Node2D) -> Vector2i:
+func _get_grid_cell(block: Node2D) -> Vector2i:
 	var world_pos = block.global_position - $GameLayout/Playfield.global_position
 	var col = floori(world_pos.x / BLOCK_SIZE)
 	var row = floori(world_pos.y / BLOCK_SIZE)
 	return Vector2i(col, row)
 	
 	
-func center_playfield() -> void:
+func _center_playfield() -> void:
 	var viewport_size = get_viewport_rect().size
 	var board_width = COLUMNS * BLOCK_SIZE
 	var board_height = ROWS * BLOCK_SIZE
 	var layout_width = HUD_WIDTH + LAYOUT_GAP + board_width
+	var game_over_panel = $GameLayout/HUD/GameOverPanel
 	
 	$TextureRect.position = Vector2.ZERO
 	$TextureRect.size = viewport_size
@@ -370,11 +379,16 @@ func center_playfield() -> void:
 	)
 
 	$GameLayout/Playfield.position = Vector2(HUD_WIDTH + LAYOUT_GAP, 0)
+	
+	game_over_panel.position = Vector2(
+		(board_width - game_over_panel.size.x) / 2.0 + 100 + LAYOUT_GAP, # Esto es un apaño 'a ojo' pero parece que funciona
+		(board_height - game_over_panel.size.y) / 2.0
+	)
 #endregion
 
 
 #region Líneas completas y nivel
-func is_row_complete(row: int) -> bool:
+func _is_row_complete(row: int) -> bool:
 	for col in range(COLUMNS):
 		if grid[row][col] == null:
 			return false
@@ -382,14 +396,14 @@ func is_row_complete(row: int) -> bool:
 	return true
 	
 	
-func clear_completed_lines():
+func _clear_completed_lines():
 	var row = ROWS - 1
 	var cleared_this_turn = 0
 
 	while row >= 0:
-		if is_row_complete(row):
-			remove_row(row)
-			move_rows_down(row)
+		if _is_row_complete(row):
+			_remove_row(row)
+			_move_rows_down(row)
 			
 			cleared_this_turn += 1
 			# No decrementamos row.
@@ -399,20 +413,20 @@ func clear_completed_lines():
 			row -= 1
 			
 	if cleared_this_turn > 0:
-		update_lines_and_level(cleared_this_turn)
+		_update_lines_and_level(cleared_this_turn)
 		if cleared_this_turn < 4:
 			$LineClearSound.play()
 		else:
 			$TetrisSound.play()
 	
 	
-func remove_row(row: int):
+func _remove_row(row: int):
 	for col in range(COLUMNS):
 		grid[row][col].queue_free()
 		grid[row][col] = null
 		
 		
-func move_rows_down(from_row: int):
+func _move_rows_down(from_row: int):
 	for row in range(from_row, 0, -1):
 		for col in range(COLUMNS):
 			grid[row][col] = grid[row - 1][col]
@@ -423,7 +437,7 @@ func move_rows_down(from_row: int):
 			grid[row - 1][col] = null
 
 
-func update_lines_and_level(new_lines: int) -> void:
+func _update_lines_and_level(new_lines: int) -> void:
 	lines_cleared += new_lines
 	$GameLayout/HUD/LinesTextLabel/LinesValue.text = str(lines_cleared)
 	
@@ -438,19 +452,46 @@ func update_lines_and_level(new_lines: int) -> void:
 
 
 #region Game Over
-func is_spawn_blocked() -> bool:
+func _is_spawn_blocked() -> bool:
 	for block in current_piece.get_node("CanvasGroup").get_children():
-		var cell = get_grid_cell(block)
+		var cell = _get_grid_cell(block)
 		if grid[cell.y][cell.x] != null:
 			return true
 	return false
 	
 	
-func trigger_game_over() -> void:
+func _trigger_game_over() -> void:
 	is_game_over = true
+	
 	set_process(false)
 	set_physics_process(false)
-	$GameLayout/HUD/GameOverLabel.visible = true
+	
+	var game_over_panel = $GameLayout/HUD/GameOverPanel
+	var game_over_label = $GameLayout/HUD/GameOverPanel/GameOverVBox/GameOverLabel
+	var new_record_label = $GameLayout/HUD/GameOverPanel/GameOverVBox/NewRecordLabel
+	var record_lines_label = $GameLayout/HUD/GameOverPanel/GameOverVBox/RecordLinesLabel
+	var player_name_line_edit = $GameLayout/HUD/GameOverPanel/GameOverVBox/PlayerNameLineEdit
+	var action_button = $GameLayout/HUD/GameOverPanel/GameOverVBox/GameOverActionButton
+	
+	is_new_record = lines_cleared > HighScoreManager.record_lines
+	
+	if is_new_record:
+		new_record_label.visible = true
+		record_lines_label.visible = true
+		player_name_line_edit.visible = true
+		
+		record_lines_label.text = tr("BOARD_LINES") + ": " + str(lines_cleared)
+		action_button.text = tr("GAME_OVER_SAVE_RECORD")
+	else:
+		new_record_label.visible = false
+		record_lines_label.visible = false
+		player_name_line_edit.visible = false
+		
+		action_button.text = tr("GAME_OVER_BACK_MENU")
+	
+	game_over_panel.visible = true
+	_center_playfield()
+	
 	$GameOverSound.play()
 	$BackgroundMusic.stop()
 #endregion
@@ -462,4 +503,16 @@ func _on_quit_confirmation_dialog_canceled() -> void:
 
 func _on_quit_confirmation_dialog_confirmed() -> void:
 	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
+
+
+func _on_game_over_action_button_pressed() -> void:
+	if is_new_record:
+		var player_name = $GameLayout/HUD/GameOverPanel/GameOverVBox/PlayerNameLineEdit.text.strip_edges()
+		
+		if player_name.is_empty():
+			return
+		
+		HighScoreManager.save_record(player_name, lines_cleared)
+	
 	get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
