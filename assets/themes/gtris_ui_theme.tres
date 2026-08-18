@@ -1,5 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://cywcp4p8o508q"]
 
+[ext_resource type="FontFile" uid="uid://cjmmpewgr670t" path="res://assets/fonts/Oxanium-Regular.ttf" id="1_hg01x"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_makie"]
 content_margin_left = 20.0
 content_margin_top = 18.0
@@ -65,11 +67,15 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [resource]
+default_font = ExtResource("1_hg01x")
+default_font_size = 24
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_makie")
 Button/styles/focus = SubResource("StyleBoxFlat_innp3")
 Button/styles/hover = SubResource("StyleBoxFlat_uv637")
 Button/styles/normal = SubResource("StyleBoxFlat_n6hjx")
 Button/styles/pressed = SubResource("StyleBoxFlat_32iut")
+Label/colors/font_outline_color = Color(0.11764706, 0.47058824, 0.8156863, 1)
+Label/constants/outline_size = 4
 OptionButton/styles/focus = SubResource("StyleBoxFlat_innp3")
 OptionButton/styles/hover = SubResource("StyleBoxFlat_uv637")
 OptionButton/styles/normal = SubResource("StyleBoxFlat_n6hjx")

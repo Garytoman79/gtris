@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b863njvfbh0c0"]
 
 [ext_resource type="Script" uid="uid://c65jao75mn2nw" path="res://scenes/board/board.gd" id="1_hfb3y"]
-[ext_resource type="Texture2D" uid="uid://ed3g06gvb3tg" path="res://assets/background.png" id="2_jnyf0"]
+[ext_resource type="Texture2D" uid="uid://cyelwt12ppk4o" path="res://assets/background.png" id="2_w0prs"]
 [ext_resource type="AudioStream" uid="uid://blbidmx7lscvg" path="res://assets/sounds/gtris_music_loop.wav" id="3_c6wwm"]
 [ext_resource type="AudioStream" uid="uid://da41wp2xw5gil" path="res://assets/sounds/rotate_right.wav" id="3_q07he"]
 [ext_resource type="AudioStream" uid="uid://brpn5o5kmfjax" path="res://assets/sounds/land.wav" id="4_ci4ar"]
@@ -73,7 +73,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_jnyf0")
+texture = ExtResource("2_w0prs")
 expand_mode = 1
 stretch_mode = 6
 
@@ -145,20 +145,6 @@ shape = SubResource("RectangleShape2D_bqb0t")
 
 [node name="HUD" type="Node2D" parent="GameLayout" unique_id=2047021618]
 
-[node name="StatsPanel" type="Panel" parent="GameLayout/HUD" unique_id=393898156]
-offset_left = -25.0
-offset_top = 124.0
-offset_right = 175.0
-offset_bottom = 196.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
-
-[node name="NextPanel" type="Panel" parent="GameLayout/HUD" unique_id=297329657]
-offset_left = -25.0
-offset_top = 236.0
-offset_right = 175.0
-offset_bottom = 436.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
-
 [node name="GameTitle" type="Label" parent="GameLayout/HUD" unique_id=1385774525]
 offset_left = 7.0
 offset_top = 44.0
@@ -168,6 +154,13 @@ theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("11_k8r4w")
 theme_override_font_sizes/font_size = 48
 text = "GTRIS"
+
+[node name="StatsPanel" type="Panel" parent="GameLayout/HUD" unique_id=393898156]
+offset_left = -25.0
+offset_top = 124.0
+offset_right = 175.0
+offset_bottom = 196.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
 
 [node name="LevelTextLabel" type="HBoxContainer" parent="GameLayout/HUD" unique_id=992193953]
 offset_left = 24.0
@@ -197,6 +190,43 @@ size_flags_horizontal = 3
 [node name="LinesValue" type="Label" parent="GameLayout/HUD/LinesTextLabel" unique_id=394710716]
 layout_mode = 2
 text = "0"
+
+[node name="RecordPanel" type="Panel" parent="GameLayout/HUD" unique_id=560859328]
+offset_left = -25.0
+offset_top = 475.0
+offset_right = 175.0
+offset_bottom = 575.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
+
+[node name="RecordSection" type="VBoxContainer" parent="GameLayout/HUD/RecordPanel" unique_id=1356119951]
+layout_mode = 0
+offset_top = 10.0
+offset_right = 200.0
+offset_bottom = 93.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="RecordLabel" type="Label" parent="GameLayout/HUD/RecordPanel/RecordSection" unique_id=1658216391]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+
+[node name="RecordPlayerLabel" type="Label" parent="GameLayout/HUD/RecordPanel/RecordSection" unique_id=793786884]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="RecordLinesLabel" type="Label" parent="GameLayout/HUD/RecordPanel/RecordSection" unique_id=1917060637]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="NextPanel" type="Panel" parent="GameLayout/HUD" unique_id=297329657]
+offset_left = -25.0
+offset_top = 236.0
+offset_right = 175.0
+offset_bottom = 436.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jnyf0")
 
 [node name="NextPiecePreview" type="Node2D" parent="GameLayout/HUD" unique_id=805323119]
 position = Vector2(91, 372)

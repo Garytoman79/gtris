@@ -8,7 +8,7 @@ const COLUMNS = 10
 const ROWS = 20
 const DROP_SPEED = 0.05
 const LINES_PER_LEVEL = 10
-const SPEED_DECREASE_PER_LEVEL = 0.1 	# cuánto se reduce el intervalo por nivel
+const SPEED_DECREASE_PER_LEVEL = 0.02 	# cuánto se reduce el intervalo por nivel
 const MIN_SPEED = 0.1 					# velocidad máxima (no bajar de este intervalo)
 const DAS_DELAY = 0.25      			# tiempo antes de empezar a repetir
 const DAS_SPEED = 0.1     				# velocidad de repetición una vez arrancado
@@ -112,6 +112,10 @@ func _set_ui() -> void:
 	$GameLayout/HUD/LevelTextLabel/LevelLabel.text = tr("BOARD_LEVEL")
 	$GameLayout/HUD/LinesTextLabel/LinesLabel.text = tr("BOARD_LINES")
 	$GameLayout/HUD/NextTitle.text = tr("BOARD_NEXT")
+	
+	$GameLayout/HUD/RecordPanel/RecordSection/RecordLabel.text = tr("BOARD_RECORD")
+	$GameLayout/HUD/RecordPanel/RecordSection/RecordPlayerLabel.text = HighScoreManager.record_player
+	$GameLayout/HUD/RecordPanel/RecordSection/RecordLinesLabel.text = str(HighScoreManager.record_lines) + " " + tr("BOARD_LINES")
 	
 	$GameLayout/HUD/GameOverPanel/GameOverVBox/GameOverLabel.text = tr("GAME_OVER_TITLE")
 	$GameLayout/HUD/GameOverPanel/GameOverVBox/NewRecordLabel.text = tr("GAME_OVER_NEW_RECORD")

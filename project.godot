@@ -21,13 +21,12 @@ HighScoreManager="*uid://bbm8cjbooe8lg"
 
 [display]
 
-window/size/mode=2
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [gui]
 
-theme/custom="uid://booqr7dmjck4w"
+theme/custom="uid://cywcp4p8o508q"
 
 [input]
 
