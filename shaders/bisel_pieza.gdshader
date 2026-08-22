@@ -4,32 +4,129 @@ shader_type canvas_item;
 uniform vec4 color_luz : source_color = vec4(0.75, 0.92, 1.0, 1.0);
 uniform vec4 color_sombra : source_color = vec4(0.02, 0.08, 0.16, 1.0);
 
-// Medidas expresadas en píxeles.
-uniform float tamano_bisel : hint_range(1.0, 8.0, 1.0) = 3.0;
-uniform float grosor_borde : hint_range(0.0, 4.0, 1.0) = 1.0;
+// Profundidad visual del bloque.
+uniform float profundidad : hint_range(0.0, 6.0, 0.5) = 5.0;
+
+// Grosor del borde exterior.
+uniform float grosor_borde : hint_range(0.0, 4.0, 1.0) = 2.0;
 
 void fragment() {
-	// Conserva la textura blanca y el color de cada pieza.
-	COLOR *= texture(TEXTURE, UV);
+	// Color original de la textura + color aplicado al Sprite/Node2D.
+	vec4 textura = texture(TEXTURE, UV);
+	vec4 base = COLOR * textura;
 
-	// Distancia desde este píxel hasta el borde más cercano del bloque.
-	vec2 distancia_bordes = min(UV, vec2(1.0) - UV) / TEXTURE_PIXEL_SIZE;
-	float borde_mas_cercano = min(distancia_bordes.x, distancia_bordes.y);
+	// ---------------------------------------------------------
+	// COORDENADAS EN PÍXELES
+	// ---------------------------------------------------------
 
-	// Borde oscuro: separa visualmente los bloques de una misma pieza.
-	float borde = 1.0 - smoothstep(0.0, grosor_borde + 0.5, borde_mas_cercano);
-	COLOR.rgb = mix(COLOR.rgb, color_sombra.rgb, borde * 0.7);
+	vec2 pixel = UV / TEXTURE_PIXEL_SIZE;
 
-	// Luz en arriba/izquierda.
-	float distancia_arriba_izquierda =
-		min(UV.x, UV.y) / min(TEXTURE_PIXEL_SIZE.x, TEXTURE_PIXEL_SIZE.y);
-	float luz = 1.0 - smoothstep(0.0, tamano_bisel, distancia_arriba_izquierda);
-	COLOR.rgb = mix(COLOR.rgb, color_luz.rgb, luz * 0.35);
+	float ancho = 1.0 / TEXTURE_PIXEL_SIZE.x;
+	float alto = 1.0 / TEXTURE_PIXEL_SIZE.y;
 
-	// Sombra en abajo/derecha.
-	float distancia_abajo_derecha =
-		min(1.0 - UV.x, 1.0 - UV.y) /
-		min(TEXTURE_PIXEL_SIZE.x, TEXTURE_PIXEL_SIZE.y);
-	float sombra = 1.0 - smoothstep(0.0, tamano_bisel, distancia_abajo_derecha);
-	COLOR.rgb = mix(COLOR.rgb, color_sombra.rgb, sombra * 0.35);
+	float izquierda = pixel.x;
+	float arriba = pixel.y;
+	float derecha = ancho - pixel.x;
+	float abajo = alto - pixel.y;
+
+	// ---------------------------------------------------------
+	// BORDE EXTERIOR
+	// ---------------------------------------------------------
+
+	float borde_distancia = min(
+		min(izquierda, derecha),
+		min(arriba, abajo)
+	);
+
+	float borde = 1.0 - smoothstep(
+		0.0,
+		grosor_borde + 0.5,
+		borde_distancia
+	);
+
+	// ---------------------------------------------------------
+	// CARA CENTRAL
+	// ---------------------------------------------------------
+
+	float dentro_cara =
+		step(profundidad, pixel.x) *
+		step(profundidad, pixel.y) *
+		step(pixel.x, ancho - profundidad) *
+		step(pixel.y, alto - profundidad);
+
+	// ---------------------------------------------------------
+	// LUZ SUPERIOR / IZQUIERDA
+	// ---------------------------------------------------------
+
+	float luz_superior = 1.0 - smoothstep(
+		0.0,
+		profundidad,
+		arriba
+	);
+
+	float luz_izquierda = 1.0 - smoothstep(
+		0.0,
+		profundidad,
+		izquierda
+	);
+
+	float luz = max(luz_superior, luz_izquierda);
+
+	// ---------------------------------------------------------
+	// SOMBRA INFERIOR / DERECHA
+	// ---------------------------------------------------------
+
+	float sombra_inferior = 1.0 - smoothstep(
+		0.0,
+		profundidad,
+		abajo
+	);
+
+	float sombra_derecha = 1.0 - smoothstep(
+		0.0,
+		profundidad,
+		derecha
+	);
+
+	float sombra = max(
+		sombra_inferior,
+		sombra_derecha
+	);
+
+	// ---------------------------------------------------------
+	// APLICAR RELIEVE
+	// ---------------------------------------------------------
+
+	vec3 color = base.rgb;
+
+	// Borde exterior oscuro.
+	color = mix(
+		color,
+		color_sombra.rgb,
+		borde * 0.85
+	);
+
+	// Bisel superior/izquierdo.
+	color = mix(
+		color,
+		color_luz.rgb,
+		luz * 0.75
+	);
+
+	// Bisel inferior/derecho.
+	color = mix(
+		color,
+		color_sombra.rgb,
+		sombra * 0.85
+	);
+
+	// La cara central conserva completamente
+	// el color original de la pieza.
+	color = mix(
+		color,
+		base.rgb,
+		dentro_cara
+	);
+
+	COLOR = vec4(color, base.a);
 }

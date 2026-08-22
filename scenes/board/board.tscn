@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://c8xd3y4wxie1n" path="res://assets/sounds/line_clear.wav" id="5_exf0g"]
 [ext_resource type="AudioStream" uid="uid://cjkj5yp6pl8a2" path="res://assets/sounds/game_over.wav" id="6_hxlvt"]
 [ext_resource type="AudioStream" uid="uid://dqi0cagdogtki" path="res://assets/sounds/tetris.wav" id="7_dj4mb"]
+[ext_resource type="AudioStream" uid="uid://d0yan8kagge0i" path="res://assets/sounds/new_record.wav" id="7_hxlvt"]
 [ext_resource type="FontFile" uid="uid://2ohy7y5an0go" path="res://assets/fonts/Oxanium-Bold.ttf" id="11_k8r4w"]
 [ext_resource type="Theme" uid="uid://cywcp4p8o508q" path="res://assets/themes/gtris_ui_theme.tres" id="11_w0prs"]
 
@@ -65,7 +66,7 @@ corner_radius_bottom_left = 6
 [node name="Board" type="Node2D" unique_id=499583945]
 script = ExtResource("1_hfb3y")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=437780874]
+[node name="Background" type="TextureRect" parent="." unique_id=437780874]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -89,6 +90,9 @@ stream = ExtResource("4_ci4ar")
 
 [node name="LevelUpSound" type="AudioStreamPlayer" parent="." unique_id=1268062109]
 stream = ExtResource("5_c6wwm")
+
+[node name="NewRecordSound" type="AudioStreamPlayer" parent="." unique_id=2017826771]
+stream = ExtResource("7_hxlvt")
 
 [node name="GameOverSound" type="AudioStreamPlayer" parent="." unique_id=2116436119]
 stream = ExtResource("6_hxlvt")
@@ -269,6 +273,13 @@ visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 alignment = 1
+
+[node name="PlayerNameErrorLabel" type="Label" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=10125756]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3019608, 0.3019608, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="GameOverActionButton" type="Button" parent="GameLayout/HUD/GameOverPanel/GameOverVBox" unique_id=255506677]
 layout_mode = 2

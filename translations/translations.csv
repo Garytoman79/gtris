@@ -2,6 +2,10 @@ keys,en,es,fr
 MENU_PLAY,Play,Jugar,Jouer
 MENU_CONTROLS,Controls,Controles,Contrôles
 MENU_LANGUAGE,Language,Idioma,Langue
+MENU_SCREEN,Screen mode,Modo de pantalla,Mode écran
+MENU_SCREEN_WINDOWED,Windowed,Ventana,En fenêtre
+MENU_SCREEN_FULL,Full screen,Pantalla completa,Plein écran
+MENU_BACK,Back,Volver,Retour
 MENU_EXIT,Exit,Salir,Quitter
 ,,,
 QUIT_CONFIRM_TEXT,Do you want to quit the game?,¿Quieres salir de la partida?,Voulez-vous quitter la partie?
@@ -15,7 +19,6 @@ CONTROLS_FAST_DOWN,Fast downward movement,Descenso rápido,Descente rapide
 CONTROLS_ROTATE_LEFT,Rotate left,Girar a la izquierda,Tourner à gauche
 CONTROLS_ROTATE_RIGHT,Rotate right,Girar a la derecha,Tourner à droite
 CONTROLS_PAUSE_EXIT,Pause / Exit,Pausa / Salir,Pause / Quitter
-MENU_BACK,Back,Volver,Retour
 ,,,
 BOARD_LEVEL,Level,Nivel,Niveau
 BOARD_LINES,Lines,Líneas,Lignes
@@ -28,3 +31,4 @@ GAME_OVER_NEW_RECORD,New Record!,¡Nuevo récord!,Nouveau record!
 GAME_OVER_BACK_MENU,Back to Menu,Volver al menú,Retour au menu
 GAME_OVER_PLAYER_NAME,Player name,Nombre del jugador,Nom du joueur
 GAME_OVER_SAVE_RECORD,Save record,Guardar record,Enregistrer le record
+GAME_OVER_NAME_REQUIRED,Name is required,El nombre es obligatorio,Le nom est obligatoire

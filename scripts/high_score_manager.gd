@@ -44,5 +44,3 @@ func save_record(player_name: String, lines: int) -> void:
 	
 	file.store_var(data)
 	file.close()
-
-	print("RECORD: " + str(data))

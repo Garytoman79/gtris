@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://dc6aye0ammvi3"]
 
 [ext_resource type="Script" uid="uid://bb6xreo6q5tk0" path="res://scenes/main_menu/main_menu.gd" id="1_fsom3"]
-[ext_resource type="Theme" uid="uid://booqr7dmjck4w" path="res://assets/themes/gtris_theme.tres" id="1_ob46e"]
 [ext_resource type="FontFile" uid="uid://2ohy7y5an0go" path="res://assets/fonts/Oxanium-Bold.ttf" id="3_ob46e"]
 [ext_resource type="Theme" uid="uid://cywcp4p8o508q" path="res://assets/themes/gtris_ui_theme.tres" id="4_uqeha"]
 
@@ -28,7 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_ob46e")
+theme = ExtResource("4_uqeha")
 script = ExtResource("1_fsom3")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=919415213]
@@ -67,6 +66,22 @@ theme = ExtResource("4_uqeha")
 layout_mode = 2
 theme = ExtResource("4_uqeha")
 
+[node name="ScreenModeButton" type="Button" parent="PanelContainer/MenuContainer" unique_id=1598355441]
+layout_mode = 2
+theme = ExtResource("4_uqeha")
+
+[node name="ScreenModeOptionButton" type="OptionButton" parent="PanelContainer/MenuContainer" unique_id=1765272374]
+visible = false
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme = ExtResource("4_uqeha")
+alignment = 1
+item_count = 2
+popup/item_0/text = "Ventana"
+popup/item_0/id = 0
+popup/item_1/text = "Pantalla completa"
+popup/item_1/id = 1
+
 [node name="LanguageButton" type="Button" parent="PanelContainer/MenuContainer" unique_id=820270113]
 layout_mode = 2
 theme = ExtResource("4_uqeha")
@@ -76,6 +91,7 @@ visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme = ExtResource("4_uqeha")
+alignment = 1
 
 [node name="ExitButton" type="Button" parent="PanelContainer/MenuContainer" unique_id=1782896375]
 layout_mode = 2
@@ -83,6 +99,8 @@ theme = ExtResource("4_uqeha")
 
 [connection signal="pressed" from="PanelContainer/MenuContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MenuContainer/ControlsButton" to="." method="_on_controls_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MenuContainer/ScreenModeButton" to="." method="_on_screen_mode_button_pressed"]
+[connection signal="item_selected" from="PanelContainer/MenuContainer/ScreenModeOptionButton" to="." method="_on_screen_mode_option_button_item_selected"]
 [connection signal="pressed" from="PanelContainer/MenuContainer/LanguageButton" to="." method="_on_language_button_pressed"]
 [connection signal="item_selected" from="PanelContainer/MenuContainer/LanguageOptionButton" to="." method="_on_language_option_button_item_selected"]
 [connection signal="pressed" from="PanelContainer/MenuContainer/ExitButton" to="." method="_on_exit_button_pressed"]
